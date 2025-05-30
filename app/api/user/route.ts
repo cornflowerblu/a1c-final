@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { NextRequest } from 'next/server';
+import { requireAuth } from "@/app/lib/auth"
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -27,11 +28,16 @@ async function getAllUsers() {
 
 
 
-export async function GET() {
-    return new Response(JSON.stringify(await getAllUsers()), {
-        status: 200,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+export async function GET(req: NextRequest) {
+  try{
+   await requireAuth(req)
+   return NextResponse.json({
+     users: await getAllUsers()
+   })
+  } catch {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    )
+  }    
 }
