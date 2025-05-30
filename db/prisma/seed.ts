@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import * as dotenv from 'dotenv';
+
+// Load environment variables from .env file at project root
+dotenv.config();
 
 const prisma = new PrismaClient();
+
 
 async function main() {
   // Clear existing data
