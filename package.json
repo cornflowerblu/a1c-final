@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "install:prisma": "npm i -g prisma",
+    "prisma:migrate": "prisma migrate",
+    "build:prod": "npm i -g prisma && prisma migrate && next build",
     "start": "next start",
     "lint": "next lint"
   },
