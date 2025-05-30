@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "install:prisma": "npm i -g prisma",
-    "prisma:migrate": "prisma migrate",
-    "build:prod": "npm i -g prisma && prisma migrate && next build",
+    "prisma:generate": "prisma generate --schema db/prisma",
+    "build:prod": "npm i -g prisma && npm run prisma:generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
