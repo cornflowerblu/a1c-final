@@ -19,12 +19,26 @@ export async function GET(req: NextRequest) {
     });
 
     // Optional: you can now use userId, etc.
-    return NextResponse.json({
+    const user = NextResponse.json({
       message: 'Authenticated request',
       userId,
       sessionId,
       claims,
     });
+    
+    //send this response to 
+    const response = await fetch('https://wtaialbbitssvhosbtji.supabase.co/functions/v1/add-user', {
+      method: 'POST',
+      ...user
+    });
+
+    if (!response.ok) {
+      console.log('Failed to add user');
+    }
+
+    console.log('Added!')
+
+    return user;
   } catch (err) {
     return new NextResponse('Invalid token', { status: 403 });
   }
