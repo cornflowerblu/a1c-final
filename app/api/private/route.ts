@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@clerk/backend';
 
 export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
+  const authHeader = req.headers.get('authorization');  
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return new NextResponse('Unauthorized', { status: 401 });
@@ -17,28 +17,9 @@ export async function GET(req: NextRequest) {
     const { userId, sessionId, claims } = await verifyToken(token, {
       secretKey: process.env.CLERK_SECRET_KEY,
     });
-
-    // Optional: you can now use userId, etc.
-    const user = NextResponse.json({
-      message: 'Authenticated request',
-      userId,
-      sessionId,
-      claims,
-    });
     
-    //send this response to 
-    const response = await fetch('https://wtaialbbitssvhosbtji.supabase.co/functions/v1/add-user', {
-      method: 'POST',
-      ...user
-    });
-
-    if (!response.ok) {
-      console.log('Failed to add user');
-    }
-
-    console.log('Added!')
-
-    return user;
+    return (NextResponse.json({userId})
+  ) 
   } catch (err) {
     return new NextResponse('Invalid token', { status: 403 });
   }

@@ -1,5 +1,6 @@
 'use client';
 
+import { decodeJwt } from '@clerk/backend/jwt';
 import { useAuth } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 
@@ -14,6 +15,11 @@ export function HomeContent() {
       try {
         const token = await getToken();
         
+        if (!token) {
+          setAuthData({ error: 'No token found' });
+          return;
+        }
+
         const response = await fetch('/api/private', {
           headers: {
             Authorization: `Bearer ${token}`,
